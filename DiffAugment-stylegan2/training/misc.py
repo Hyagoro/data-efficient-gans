@@ -28,6 +28,18 @@ def open_file_or_url(file_or_url):
 def load_pkl(file_or_url):
     with open_file_or_url(file_or_url) as file:
         return pickle.load(file, encoding='latin1')
+    
+
+def locate_latest_pkl(result_dir):
+    # from https://github.com/skyflynil/stylegan2/blob/master/training/misc.py
+    allpickles = sorted(glob.glob(os.path.join(result_dir, '0*', 'network-*.pkl')))
+    if len(allpickles) == 0:
+        return None, 0.0
+    latest_pickle = allpickles[-1]
+    resume_run_id = os.path.basename(os.path.dirname(latest_pickle))
+    RE_KIMG = re.compile('network-snapshot-(\d+).pkl')
+    kimg = int(RE_KIMG.match(os.path.basename(latest_pickle)).group(1))
+    return (latest_pickle, float(kimg))
 
 
 def save_pkl(obj, filename):
