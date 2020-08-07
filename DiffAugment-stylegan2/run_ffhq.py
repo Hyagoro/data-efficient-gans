@@ -35,6 +35,7 @@ def run(dataset, resolution, result_dir, DiffAugment, num_gpus, batch_size, tota
     
     train.image_snapshot_ticks = 1
     train.network_snapshot_ticks = 4
+    sched.minibatch_gpu_base = 16
 
     # preprocess dataset into tfrecords if necessary
     dataset = dataset_tool.create_dataset(dataset, resolution)
